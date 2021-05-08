@@ -15,21 +15,31 @@ Example use case:
 type: python jpg_to_png_converter.py pokedex new_folder       #pokedex folder(has the jpg file), and new_folder folder(will recieve the png file)
 # result: pokemon jpg images from pokedex folder will be copied to new_folder folder as png images
 '''
-# following requires input from command prompt
-# jpg_folder = sys.argv[1] # can input through cmd, can't run in environment b/c it has yet to receive value
-# png_folder = sys.argv[2] # can input through cmd, can't run in environment b/c it has yet to receive value
-# print(jpg_folder, png_folder)
+
+
+def cmd_input():
+    '''following requires input from command prompt'''
+    cmd_input_holder = []
+
+    # first input on command prompt
+    jpg_folder = sys.argv[1]
+    cmd_input_holder.append(jpg_folder)
+
+    # Second input on command prompt
+    png_folder = sys.argv[2]
+    cmd_input_holder.append(png_folder)
+
+    # print(jpg_folder, png_folder) # Test to see if the input in cmd reflects the values
+
+    return cmd_input_holder
 
 
 # check if new_folder exist, if not create it
 # Utilizes OS module to grab the path
 
-# need to add input output
-def jpg_folder_check():
-    '''jpg folder exist check'''
 
-    # meant for tests, will change name pokedex to sys.argv[1]
-    jpg_folder_name = 'pokedex'
+def jpg_folder_check(jpg_folder_name):
+    '''jpg folder exist check'''
 
     # check if folder name is in directory
     jpg_folder_exist = jpg_folder_name in os.listdir()
@@ -39,20 +49,15 @@ def jpg_folder_check():
 
     return jpg_folder_name
 
-# need to add input output
 
-
-def png_fodler_check():
+def png_fodler_check(png_folder_name):
     '''png folder exist check'''
-
-    # tests, will change name to sys.argv[2]
-    png_folder_name = 'new_folder'
 
     # check if folder name is in directory
     png_folder_exist = png_folder_name in os.listdir()
 
     if png_folder_exist == False:
-        # create png folder # can be any folder name input in cmd prompt.
+        # create png folder with name entered in cmd prompt
         os.mkdir(png_folder_name)
 
     return png_folder_name
@@ -95,13 +100,21 @@ def save_png(new_images_dict):
 
 if __name__ == "__main__":
     print("hi")
-    '''need to finish my work on the cmd prompt'''
+    '''few types of test'''
+    # 1. input correctly, out come is correct (Success)
+    # 2. input wrong jpg folder name, out come is exiting the system with a message saying "try again"
+    # 3. input a random png folder name, it should be able ot create a new png folder with taht name and put the png images in it.
+
+    '''cmd prompt input "pokedex" "new_folder" '''
+    folder_list = cmd_input()
+    jpg_folder = folder_list[0]
+    png_folder = folder_list[1]
 
     '''jpg folder check'''
-    jpg_folder_name = jpg_folder_check()
+    jpg_folder_name = jpg_folder_check(jpg_folder)
 
     '''png folder check'''
-    png_folder_name = png_fodler_check()
+    png_folder_name = png_fodler_check(png_folder)
 
     '''get existing path'''
     original_path = os.getcwd()
@@ -117,5 +130,5 @@ if __name__ == "__main__":
     change_directory(
         png_folder_name, original_path)  # change_directory_png(png_folder_name, original_path)
 
-    '''save images as png'''
+    '''save images as png at current directory'''
     save_png(new_name_image_dict)
